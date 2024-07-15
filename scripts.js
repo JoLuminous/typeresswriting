@@ -1,7 +1,7 @@
 // scripts.js
 
 // Function to save the story
-document.getElementById('save-button').addEventListener('click', () => {
+function saveStory() {
     const title = document.getElementById('story-title').value.trim();
     const text = document.getElementById('story-text').value.trim();
     const quotes = document.getElementById('sample-quotes').value.trim();
@@ -19,18 +19,18 @@ document.getElementById('save-button').addEventListener('click', () => {
     document.getElementById('story-title').value = '';
     document.getElementById('story-text').value = '';
     document.getElementById('sample-quotes').value = '';
-});
+}
 
 // Function to load saved stories
 function loadStories() {
     const stories = JSON.parse(localStorage.getItem('stories')) || [];
     const storyList = document.getElementById('story-list');
 
-    stories.forEach((story, index) => {
+    stories.forEach((story) => {
         const listItem = document.createElement('li');
         const storyLink = document.createElement('a');
-        storyLink.textContent = `${story.title}`;
-        storyLink.href = `#`;
+        storyLink.textContent = story.title;
+        storyLink.href = '#';
         storyLink.addEventListener('click', () => displayStory(story));
         listItem.appendChild(storyLink);
         storyList.appendChild(listItem);
@@ -42,7 +42,7 @@ function displayStory(story) {
     alert(`Title: ${story.title}\n\nStory:\n${story.text}\n\nSample Quotes:\n${story.quotes}`);
 }
 
-// Function to display a random featured story on the index page
+// Function to display a random featured story
 function displayRandomFeaturedStory() {
     const stories = JSON.parse(localStorage.getItem('stories')) || [];
     if (stories.length === 0) {
@@ -58,33 +58,18 @@ function displayRandomFeaturedStory() {
     document.getElementById('featured-quotes').textContent = randomStory.quotes;
 }
 
-// Load stories when the browse page is loaded
-if (window.location.pathname.endsWith('browse.html')) {
-    loadStories();
-}
-
-function startdisplay() {
-    loadStories();
-}
-
-// Display random featured story when the index page is loaded
-if (window.location.pathname.endsWith('index.html')) {
-    displayRandomFeaturedStory();
-}
-
-// API Ninjas Thesaurus API key and URL
-const apiNinjasKey = 'Wl8eDozBKRZqli7XSWWtzA==zw7X28TN8K9wmyj7';
-const apiNinjasUrl = 'https://api.api-ninjas.com/v1/thesaurus?word=';
-
 // Function to fetch thesaurus data from API Ninjas
-document.getElementById('thesaurus-button').addEventListener('click', () => {
+function fetchThesaurusData() {
     const word = document.getElementById('thesaurus').value.trim();
     if (word === '') {
         alert('Please enter a word to find synonyms.');
         return;
     }
 
-    fetch(`${apiNinjasUrl}${word}`, {
+    const apiNinjasKey = 'Wl8eDozBKRZqli7XSWWtzA==zw7X28TN8K9wmyj7';
+    const apiNinjasUrl = `https://api.api-ninjas.com/v1/thesaurus?word=${word}`;
+
+    fetch(apiNinjasUrl, {
         method: 'GET',
         headers: {
             'X-Api-Key': apiNinjasKey
@@ -108,4 +93,25 @@ document.getElementById('thesaurus-button').addEventListener('click', () => {
         console.error('Error fetching thesaurus data:', error);
         alert('Error fetching thesaurus data. Please try again later.');
     });
+}
+
+// Add event listeners after the DOM content is loaded
+document.addEventListener('DOMContentLoaded', () => {
+    const saveButton = document.getElementById('save-button');
+    if (saveButton) {
+        saveButton.addEventListener('click', saveStory);
+    }
+
+    const thesaurusButton = document.getElementById('thesaurus-button');
+    if (thesaurusButton) {
+        thesaurusButton.addEventListener('click', fetchThesaurusData);
+    }
+
+    if (document.getElementById('story-list')) {
+        loadStories();
+    }
+
+    if (document.getElementById('featured-story-container')) {
+        displayRandomFeaturedStory();
+    }
 });
