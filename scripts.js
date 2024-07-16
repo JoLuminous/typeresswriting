@@ -32,10 +32,18 @@ function displayStories(stories) {
         listItem.innerHTML = `
             <strong>${story.title}</strong>
             <button onclick="viewStory(${index})">View</button>
-            <button onclick="deleteStory(${index})">Delete</button>
+            <button onclick="confirmDeleteStory(${index})">Delete</button>
         `;
         storyList.appendChild(listItem);
     });
+}
+
+// Function to confirm deletion of a story
+function confirmDeleteStory(index) {
+    const confirmation = confirm('Are you sure you want to delete this story?');
+    if (confirmation) {
+        deleteStory(index);
+    }
 }
 
 // Function to view a story
