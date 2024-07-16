@@ -27,14 +27,53 @@ function displayStories(stories) {
     const storyList = document.getElementById('story-list');
     storyList.innerHTML = '';
 
-    stories.forEach(story => {
+    stories.forEach((story, index) => {
         const listItem = document.createElement('li');
-        listItem.textContent = story.title;
-        listItem.addEventListener('click', () => {
-            alert(`Title: ${story.title}\n\nStory:\n${story.content}\n\nSample Quotes:\n${story.quotes}`);
-        });
+        listItem.innerHTML = `
+            <strong>${story.title}</strong>
+            <button onclick="viewStory(${index})">View</button>
+            <button onclick="deleteStory(${index})">Delete</button>
+        `;
         storyList.appendChild(listItem);
     });
+}
+
+// Function to view a story
+function viewStory(index) {
+    const stories = JSON.parse(localStorage.getItem('stories')) || [];
+    const story = stories[index];
+    alert(`Title: ${story.title}\n\nStory:\n${story.content}\n\nSample Quotes:\n${story.quotes}`);
+}
+
+// Function to delete a story
+function deleteStory(index) {
+    let stories = JSON.parse(localStorage.getItem('stories')) || [];
+    stories.splice(index, 1);
+    localStorage.setItem('stories', JSON.stringify(stories));
+    loadStoriesFromLocalStorage();
+}
+
+// Function to convert stories to TXT format
+function convertStoriesToTXT(stories) {
+    return stories.map(story => {
+        return `Title: ${story.title}\n\nStory:\n${story.content}\n\nSample Quotes:\n${story.quotes}\n\n---\n\n`;
+    }).join('');
+}
+
+// Function to trigger the TXT download
+function downloadStoriesAsTXT() {
+    const stories = JSON.parse(localStorage.getItem('stories')) || [];
+    const txtContent = convertStoriesToTXT(stories);
+
+    const blob = new Blob([txtContent], { type: 'text/plain' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'stories.txt';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
 }
 
 // Function to display a random featured story
@@ -81,29 +120,6 @@ document.addEventListener('DOMContentLoaded', () => {
         downloadTxtButton.addEventListener('click', downloadStoriesAsTXT);
     }
 });
-
-// Function to convert stories to TXT format
-function convertStoriesToTXT(stories) {
-    return stories.map(story => {
-        return `Title: ${story.title}\n\nStory:\n${story.content}\n\nSample Quotes:\n${story.quotes}\n\n---\n\n`;
-    }).join('');
-}
-
-// Function to trigger the TXT download
-function downloadStoriesAsTXT() {
-    const stories = JSON.parse(localStorage.getItem('stories')) || [];
-    const txtContent = convertStoriesToTXT(stories);
-
-    const blob = new Blob([txtContent], { type: 'text/plain' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'stories.txt';
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
-}
 
 // API Ninjas Thesaurus API key and URL
 const apiNinjasKey = 'Wl8eDozBKRZqli7XSWWtzA==zw7X28TN8K9wmyj7';
