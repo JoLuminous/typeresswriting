@@ -1,101 +1,75 @@
-body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
+/* styles.css */
+
+/* General styles for the container */
+.container {
+    display: flex;
+    justify-content: space-between;
 }
 
-header {
-    background-color: #4CAF50;
-    color: white;
-    padding: 1em;
+/* General styles for main content and thesaurus container */
+.main-content {
+    flex: 1;
+    margin-right: 20px;
+}
+
+.thesaurus-container {
+    width: 200px;
+}
+
+/* Responsive styles for mobile devices */
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column;
+    }
+
+    .main-content {
+        margin-right: 0;
+    }
+
+    .thesaurus-container {
+        width: 100%;
+        margin-top: 20px;
+    }
+}
+
+/* Additional styles for better visualization */
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+}
+
+h1 {
     text-align: center;
 }
 
-nav ul {
+input[type="text"],
+textarea {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    box-sizing: border-box;
+}
+
+button {
+    padding: 10px 20px;
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    cursor: pointer;
+    margin: 10px 0;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+#thesaurus-results {
     list-style-type: none;
     padding: 0;
 }
 
-nav ul li {
-    display: inline;
-    margin: 0 10px;
-}
-
-nav ul li a {
-    color: white;
-    text-decoration: none;
-}
-
-main {
-    padding: 20px;
-}
-
-.writing-layout {
-    display: flex;
-    gap: 20px;
-}
-
-.writing-container {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-}
-
-#story-title, #story-text, #sample-quotes {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 10px;
-    font-size: 16px;
-    line-height: 1.5;
-}
-
-#story-text, #sample-quotes {
-    height: 150px;
-}
-
-#save-button {
-    padding: 10px;
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    cursor: pointer;
-}
-
-#save-button:hover {
-    background-color: #45a049;
-}
-
-aside {
-    width: 250px;
-}
-
-.sidebar {
-    border: 1px solid #ddd;
-    padding: 10px;
-}
-
-.sidebar h2, .sidebar h3 {
-    margin-top: 0;
-}
-
-#thesaurus {
-    width: 100%;
+#thesaurus-results li {
     padding: 5px;
-}
-
-#thesaurus-button {
-    padding: 5px;
-    margin-top: 5px;
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    cursor: pointer;
-}
-
-#thesaurus-button:hover {
-    background-color: #45a049;
-}
-
-#thesaurus-result {
-    margin-top: 10px;
+    background-color: #f1f1f1;
+    margin: 5px 0;
 }
