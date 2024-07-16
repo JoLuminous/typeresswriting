@@ -80,39 +80,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (downloadTxtButton) {
         downloadTxtButton.addEventListener('click', downloadStoriesAsTXT);
     }
-
-    const downloadPdfButton = document.getElementById('download-pdf-button');
-    if (downloadPdfButton) {
-        downloadPdfButton.addEventListener('click', downloadStoriesAsPDF);
-    }
 });
-
-// Function to convert stories to PDF format
-function convertStoriesToPDF(stories) {
-    const { jsPDF } = window.jspdf;
-    const doc = new jsPDF();
-
-    stories.forEach((story, index) => {
-        doc.text(`Title: ${story.title}`, 10, 10 + (index * 40));
-        doc.text(`Story:`, 10, 20 + (index * 40));
-        doc.text(story.content, 10, 30 + (index * 40));
-        doc.text(`Sample Quotes:`, 10, 40 + (index * 40));
-        doc.text(story.quotes, 10, 50 + (index * 40));
-        if (index < stories.length - 1) {
-            doc.addPage();
-        }
-    });
-
-    return doc;
-}
-
-// Function to trigger the PDF download
-function downloadStoriesAsPDF() {
-    const stories = JSON.parse(localStorage.getItem('stories')) || [];
-    const pdfDoc = convertStoriesToPDF(stories);
-
-    pdfDoc.save('stories.pdf');
-}
 
 // Function to convert stories to TXT format
 function convertStoriesToTXT(stories) {
